@@ -1,7 +1,16 @@
 def _parse_gpu_memory_mb(value):
-    """Normalize numeric or legacy '<number> MB' GPU memory values."""
+    """Normalize GPU memory inputs to an integer MiB value."""
     if isinstance(value, str):
-        value = value.strip().split(maxsplit=1)[0]
+        parts = value.strip().split()
+        if not parts:
+            return 0
+
+        number = parts[0]
+        unit = parts[1].upper() if len(parts) > 1 else "MB"
+        try:
+            value = float(number) * (1024 if unit.startswith("G") else 1)
+        except ValueError:
+            return 0
 
     try:
         return max(0, round(float(value)))
