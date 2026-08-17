@@ -1,4 +1,13 @@
-import math
+def _parse_gpu_memory_mb(value):
+    """Normalize numeric or legacy '<number> MB' GPU memory values."""
+    if isinstance(value, str):
+        value = value.strip().split(maxsplit=1)[0]
+
+    try:
+        return max(0, round(float(value)))
+    except (ValueError, TypeError):
+        return 0
+
 
 def recommend_settings(hardware_info: dict, model_profile: dict) -> dict:
     """
@@ -10,11 +19,7 @@ def recommend_settings(hardware_info: dict, model_profile: dict) -> dict:
     cpu_logical_cores = int(hardware_info.get("logical_cores", 4)) # Ensure int for calculations
 
     gpu_name = hardware_info.get("gpu", "None")
-    # Fix: Ensure gpu_memory_mb is treated as a number. If 'Unknown' or not convertible, default to 0.
-    try:
-        gpu_memory_mb = int(hardware_info.get("gpu_memory_mb", 0))
-    except (ValueError, TypeError): # Handles cases where it might be "Unknown" string or None
-        gpu_memory_mb = 0
+    gpu_memory_mb = _parse_gpu_memory_mb(hardware_info.get("gpu_memory_mb", 0))
 
     # Fix: Use 'goal' from model_profile, as 'usage_needs' is not returned by model_profile.py
     user_goal = model_profile.get("goal", "Balanced/general purpose")

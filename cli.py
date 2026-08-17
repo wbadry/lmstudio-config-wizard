@@ -29,13 +29,13 @@ def main():
     )
     args = parser.parse_args()
 
-    print("\n[bold green]🔍 Detecting system hardware...[/bold green]")
+    print("\n[bold green]Detecting system hardware...[/bold green]")
     hardware_info = get_hardware_profile()
 
     # Display hardware details before asking questions
-    print("\n[bold green]🧠 System Hardware Info[/bold green]")
+    print("\n[bold green]System Hardware Info[/bold green]")
     console = Console()
-    table = Table(title="🧠 System Hardware Info", title_style="bold cyan")
+    table = Table(title="System Hardware Info", title_style="bold cyan")
     table.add_column("Component", style="bold magenta")
     table.add_column("Details", style="green")
 
@@ -44,10 +44,10 @@ def main():
 
     console.print(table)
 
-    print("\n[bold green]🧠 Understanding your model usage needs...[/bold green]")
+    print("\n[bold green]Understanding your model usage needs...[/bold green]")
     user_needs = ask_model_profile()
 
-    print("\n[bold green]⚙️ Generating optimal configuration...[/bold green]")
+    print("\n[bold green]Generating optimal configuration...[/bold green]")
     recommended_config = recommend_settings(hardware_info, user_needs)
 
     display_config(recommended_config)
@@ -61,7 +61,7 @@ def main():
         with open(output_path, "w") as f:
             yaml.dump(recommended_config, f, allow_unicode=True)
 
-        print(f"\n[green]✅ Configuration exported to:[/green] {output_path}\n")
+        print(f"\n[green]Configuration exported to:[/green] {output_path}\n")
 
 
 if __name__ == "__main__":

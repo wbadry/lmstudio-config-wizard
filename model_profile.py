@@ -2,15 +2,15 @@ import questionary
 
 
 def ask_model_profile():
-    print("\n📦 Let's configure your LLM model profile based on your needs:\n")
+    print("\nLet's configure your LLM model profile based on your needs:\n")
 
     model_name = questionary.text(
-        "🤖 What is the name of your model (e.g., llama3, mythomax, nous-hermes)?"
+        "What is the name of your model (e.g., llama3, mythomax, nous-hermes)?"
     ).ask()
 
     # Update model size question to use grouped ranges
     model_size = questionary.select(
-        "📏 What is the size of the model?",
+        "What is the size of the model?",
         choices=[
             "Under 2 GB",
             "2-4 GB",
@@ -23,7 +23,7 @@ def ask_model_profile():
 
     # Group quantization types and ask user for the group
     quantization_group = questionary.select(
-        "🔢 Which quantization group does the model belong to?",
+        "Which quantization group does the model belong to?",
         choices=[
             "4-bit Quantization",
             "8-bit Quantization",
@@ -34,45 +34,45 @@ def ask_model_profile():
     # Ask for specific quantization type within the selected group
     if quantization_group == "4-bit Quantization":
         quantization = questionary.select(
-            "🔢 Select the specific quantization type:",
+            "Select the specific quantization type:",
             choices=["Q4_K_M", "Q4_K_S", "4bit"],
         ).ask()
     elif quantization_group == "8-bit Quantization":
         quantization = questionary.select(
-            "🔢 Select the specific quantization type:",
+            "Select the specific quantization type:",
             choices=["Q8_0"],
         ).ask()
     else:
         quantization = questionary.select(
-            "🔢 Select the specific quantization type:",
+            "Select the specific quantization type:",
             choices=["Q3_K_M", "Other"],
         ).ask()
 
     format = questionary.select(
-        "📂 What format is the model?",
+        "What format is the model?",
         choices=["GGUF", "GGML", "HF (transformers)", "Other"],
     ).ask()
 
     language = questionary.select(
-        "🈯 What is the primary language of the model?",
-        choices=["English", "Multilingual", "Persian (فارسی)", "Code", "Other"],
+        "What is the primary language of the model?",
+        choices=["English", "Multilingual", "Persian (Farsi)", "Code", "Other"],
     ).ask()
 
     use_case = questionary.select(
-        "🎯 What is your intended use case?",
+        "What is your intended use case?",
         choices=["RAG (Retrieval Augmented Generation)", "Creative Writing", "Coding", "Chatbot/Assistant", "Translation", "Other"],
     ).ask()
 
-    print("\n🛠️ Now let’s fine-tune the generation behavior based on your goals:\n")
+    print("\nNow let's fine-tune the generation behavior based on your goals:\n")
 
     goal = questionary.select(
-        "🎨 What is more important for your task?",
+        "What is more important for your task?",
         choices=[
-            "💡 Creativity (storytelling, brainstorming, poetry)",
-            "🎯 Accuracy (technical answers, documentation)",
-            "🗣️ Natural Dialogue (chatbots)",
-            "🔍 Factual Recall (retrieval QA)",
-            "⚙️ Balanced/general purpose",
+            "Creativity (storytelling, brainstorming, poetry)",
+            "Accuracy (technical answers, documentation)",
+            "Natural Dialogue (chatbots)",
+            "Factual Recall (retrieval QA)",
+            "Balanced/general purpose",
         ],
     ).ask()
 
@@ -96,7 +96,7 @@ def ask_model_profile():
     elif "Balanced" in goal:
         config.update({"temperature": 0.7, "top_p": 0.9, "top_k": 40})
 
-    print("\n📋 Suggested inference configuration based on your goal:")
+    print("\nSuggested inference configuration based on your goal:")
     print(f" - temperature: {config['temperature']}")
     print(f" - top_p: {config['top_p']}")
     print(f" - top_k: {config['top_k']}")
